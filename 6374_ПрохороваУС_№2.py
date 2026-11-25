@@ -3,15 +3,13 @@ import numpy as np
 import os
 from datetime import datetime
 
-# Путь к логу
+# путь к логу
 log_path = os.path.join("Lab2_Media", "logs", "history.txt")
 
-# Папка для результатов
+# папка для результатов
 output_dir = os.path.join("Lab2_Media", "data", "output")
 
 print("Напишите 'exit' для выхода\n")
-
-# Бесконечный цикл для повторного ввода
 while True:
     filename = input("Введите имя файла для обработки: ").strip()
     
@@ -30,7 +28,7 @@ while True:
         if img is None:
             raise FileNotFoundError
 
-        # --- Обработка изображения ---
+        # обработка изображения
         
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         
@@ -38,13 +36,13 @@ while True:
         
         equalized = cv2.equalizeHist(gray)
         
-        # --- Сохранение результатов ---
+        # сохранение результатов
         os.makedirs(output_dir, exist_ok=True)
 
-        # 3. Склеенное изображение (для наглядности)
+        # общее изображение
         combined = np.hstack((equalized, edges))
         
-        # Имена файлов
+        # имена файлов
         canny_path = os.path.join(output_dir, "result (Canny).jpg")
         equalization_path = os.path.join(output_dir, "result (Equalization).jpg")
         combined_path = os.path.join(output_dir, "result.jpg")
@@ -70,7 +68,7 @@ while True:
         print(f"Произошла непредвиденная ошибка: {e}")
         status_msg = f"Ошибка: {e}"
 
-    # Логирование (для всех исходов)
+    # логирование
     try:
         os.makedirs(os.path.dirname(log_path), exist_ok=True)
         with open(log_path, 'a', encoding='UTF-8') as log_file:
@@ -80,5 +78,3 @@ while True:
     except Exception as e:
         print(f"Не удалось записать лог: {e}")
 
-    # ВАЖНО: здесь больше нет break! 
-    # После успеха (или ошибки) цикл идёт на новый круг.
